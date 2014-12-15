@@ -36,7 +36,7 @@ check_postfix_tls_files(){
 check_postfix_providers_files(){
   local PROVIDERS_DIR="/etc/postfix/providers"
 
-  _log "Checking presence of Providers SASL files..."
+  _log "Checking presence of 'Providers' SASL files..."
   if [ ! -f ${PROVIDERS_DIR}/sasl_passwd ]; then
     _error "> files aren't present: exiting"
   else
@@ -48,7 +48,7 @@ create_sasl_users(){
   SASL_USERS=${SASL_USERS:-}
 
   if [ -n "${SASL_USERS}" ]; then
-    _log "Creating SASL database based on SASL_USERS environnment variable..."
+    _log "Creating SASL database based on 'SASL_USERS' environnment variable..."
     echo $SASL_USERS | tr , \\n > /tmp/sasl-users
     while IFS=":" read -r _userid _pwd; do
       _log "> create user '$_userid'"
