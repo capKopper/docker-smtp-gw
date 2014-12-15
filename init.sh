@@ -112,9 +112,30 @@ configure_postfix(){
   local MTA_HOSTNAME=${MTA_HOSTNAME:-$(hostname --fqdn)}
   _log "> setting postfix hostname to '$MTA_HOSTNAME'"
   sed -i -e 's/{{ MTA_HOSTNAME }}/'$MTA_HOSTNAME'/g' /etc/consul-template/postfix_main.cf.ctmpl
+}
+
+run_consul_template_once()
+{
+  declare KEY="config/mail/transports/default"
+
+  _log "Running consul-template once..."
+
+  _log "> checking if '$KEY' key is defined"
+  HTTP_CODE=$(curl -o /dev/null -sw "%{http_code}" http://192.168.10.10:8500/v1/kv/$KEY)
+  if [ $HTTP_CODE -ne "200" ]; then
+    if [ $HTTP_CODE -eq "404" ]; then
+      _error "'$KEY' key isn't defined. Exiting..."
+    else
+      _error "Consul return HTTP code '$HTTP_CODE'. Exiting..."
+    fi
+  fi
 
   _log "> starting 'consul-template' once time"
-  /usr/local/bin/consul-template -config=/etc/consul-template/config.hcl -once
+  /usr/local/bin/consul-template \
+  -consul=${CONSUL_IP}:${CONSUL_HTTP_API_PORT} \
+  -template="/etc/consul-template/postfix_main.cf.ctmpl:/etc/postfix/main.cf" \
+  -template="/etc/consul-template/postfix_sender_transport.ctmpl:/etc/postfix/sender_transport:postmap /etc/postfix/sender_transport" \
+  -once
 }
 
 configure_rsyslog_mail_facility(){
@@ -144,6 +165,7 @@ main(){
   configure_rsyslog_mail_facility
   waiting_consul_is_up
   configure_consul_template
+  run_consul_template_once
   start_supervisor
 }
 
