@@ -12,18 +12,6 @@ _error(){
   exit 1
 }
 
-configure_consul_template() {
-  CONSUL_IP=${CONSUL:-}
-  CONSUL_HTTP_API_PORT=${CONSUL_HTTP_API_PORT:-8500}
-
-  if [ -n "${CONSUL_IP}" ]; then
-    _log "Configure 'consul-template' with Consul access ($CONSUL_IP:$CONSUL_HTTP_API_PORT)..."
-    sed -i -e 's/{{ CONSUL_IP }}/'$CONSUL_IP'/g' -e 's/{{ CONSUL_HTTP_API_PORT }}/'$CONSUL_HTTP_API_PORT'/g' /etc/consul-template/config.hcl
-  else
-    _error "CONSUL environnment variable isn't defined"
-  fi
-}
-
 check_postfix_tls_files(){
   local SSL_DIR="/etc/postfix/ssl"
 
@@ -63,6 +51,12 @@ waiting_consul_is_up(){
     _error "'CONSUL' environnment variable isn't defined"
   fi
 }
+
+configure_consul_template() {
+  _log "Configure 'consul-template' with Consul access ($CONSUL_IP:$CONSUL_HTTP_API_PORT)..."
+  sed -i -e 's/{{ CONSUL_IP }}/'$CONSUL_IP'/g' -e 's/{{ CONSUL_HTTP_API_PORT }}/'$CONSUL_HTTP_API_PORT'/g' /etc/consul-template/config.hcl
+}
+
 create_sasl_users(){
   SASL_USERS=${SASL_USERS:-}
 
