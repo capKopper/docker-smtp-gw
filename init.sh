@@ -121,7 +121,7 @@ run_consul_template_once()
   _log "Running consul-template once..."
 
   _log "> checking if '$KEY' key is defined"
-  HTTP_CODE=$(curl -o /dev/null -sw "%{http_code}" http://192.168.10.10:8500/v1/kv/$KEY)
+  HTTP_CODE=$(curl -o /dev/null -sw "%{http_code}" http://$CONSUL_IP:$CONSUL_HTTP_API_PORT/v1/kv/$KEY)
   if [ $HTTP_CODE -ne "200" ]; then
     if [ $HTTP_CODE -eq "404" ]; then
       _error "'$KEY' key isn't defined. Exiting..."
