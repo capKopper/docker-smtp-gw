@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
     apt-get upgrade -y
 ## tools
-RUN apt-get install wget supervisor -y
+RUN apt-get install wget curl supervisor -y
 ## postfix and dependencies
 RUN apt-get install postfix sasl2-bin -y
 ## consul-template
