@@ -44,6 +44,25 @@ check_postfix_providers_files(){
   fi
 }
 
+waiting_consul_is_up(){
+  CONSUL_IP=${CONSUL:-}
+  CONSUL_HTTP_API_PORT=${CONSUL_HTTP_API_PORT:-8500}
+
+  if [ -n "${CONSUL_IP}" ]; then
+    declare TIMEOUT=60
+
+    _log "Checking if Consul ($CONSUL_IP:$CONSUL_HTTP_API_PORT) is up..."
+    until curl -s --max-time 1 "http://"$CONSUL_IP":"$CONSUL_HTTP_API_PORT"/v1/agent/self/"; do
+      TIMEOUT=$(expr $TIMEOUT - 1)
+      if [ $TIMEOUT -eq 0 ]; then
+        _error "Could not connect to Consul server. Aborting..."
+      fi
+      echo "> waiting for Consul..."
+    done
+  else
+    _error "'CONSUL' environnment variable isn't defined"
+  fi
+}
 create_sasl_users(){
   SASL_USERS=${SASL_USERS:-}
 
@@ -129,6 +148,7 @@ main(){
   configure_postfix
   configure_postfix_master_services
   configure_rsyslog_mail_facility
+  waiting_consul_is_up
   configure_consul_template
   start_supervisor
 }
