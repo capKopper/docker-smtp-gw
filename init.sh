@@ -122,14 +122,14 @@ start_supervisor(){
 }
 
 main(){
-  configure_consul_template
   check_postfix_tls_files
   check_postfix_providers_files
   create_sasl_users
   configure_sasl
-  configure_rsyslog_mail_facility
   configure_postfix
   configure_postfix_master_services
+  configure_rsyslog_mail_facility
+  configure_consul_template
   start_supervisor
 }
 
