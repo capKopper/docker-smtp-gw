@@ -212,7 +212,7 @@ class Email:
         '''
         if self.has_changed is True:
             logger.info("%s: tag that email has changed" % self.uuid)
-            self.raw.headers.add("X-Capkopper-Modify", "yes")
+            self.raw.headers.add("X-Capkopper-Filter-Modified", "yes")
 
             # email subject
 
