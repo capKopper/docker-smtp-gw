@@ -144,14 +144,14 @@ class Email:
         '''
         Set transport due to 'X-Capkopper-Env'
         '''
-        logger.info("%s: set 'X-Capkopper-Env-Transport' " % self.uuid)
+        logger.info("%s: set 'X-Capkopper-Filter-Env-Transport' " % self.uuid)
         if ( self.env_header == "dev" or
              self.env_header == "development"):
-            self.raw.headers.add("X-Capkopper-Env-Transport", "dev")
+            self.raw.headers.add("X-Capkopper-Filter-Env-Transport", "dev")
         elif ( self.env_header == "preprod" or
                self.env_header == "preproduction" or
                self.env_header == "staging"):
-            self.raw.headers.add("X-Capkopper-Env-Transport", "staging")
+            self.raw.headers.add("X-Capkopper-Filter-Env-Transport", "staging")
 
 
     def set_recipients_from_headers(self, logger, default_recipients_header):
