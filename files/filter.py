@@ -132,7 +132,7 @@ class Email:
 
         if env_header is None:
             logger.info("%s: header 'X-Capkopper-Env' isn't present, set it to '%s'" % (self.uuid, default_env_header))
-            self.raw.headers.add("X-Capkooper-Env", default_env_header)
+            self.raw.headers.add("X-Capkopper-Env", default_env_header)
             env_header = default_env_header
         else:
             logger.info("%s: header 'X-Capkopper-Env' is present (%s)" % (self.uuid, env_header))
