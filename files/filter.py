@@ -208,15 +208,12 @@ class Email:
         Tag that the email has changed
           - add a customer header "X-Capkopper-Filter"
           - add a prefix in the email 'Subject' (dev)
-          - TODO : add modifications informations into mail body
         '''
         if self.has_changed is True:
             logger.info("%s: tag that email has changed" % self.uuid)
             self.raw.headers.add("X-Capkopper-Filter-Modified", "yes")
 
             # email subject
-
-            # email body
             self.raw.headers["Subject"] =  u"[" + subject_prefix + "] - " + self.raw.headers["Subject"]
 
 
