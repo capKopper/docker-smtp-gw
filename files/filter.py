@@ -83,7 +83,7 @@ class Email:
         - uppercase
         '''
         self.uuid = str(uuid.uuid1()).replace("-", "")[:10].upper()
-        logger.info("%s: new uuid has been generate for incoming email" % self.uuid)
+        logger.info("%s: new email" % self.uuid)
 
 
     def load_from_stdin(self, logger):
