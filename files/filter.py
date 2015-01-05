@@ -203,7 +203,7 @@ class Email:
             sys.exit(1)
 
 
-    def tag_changes(self, logger):
+    def tag_changes(self, logger, subject_prefix):
         '''
         Tag that the email has changed
           - add a customer header "X-Capkopper-Filter"
@@ -215,9 +215,9 @@ class Email:
             self.raw.headers.add("X-Capkopper-Modify", "yes")
 
             # email subject
-            self.raw.headers["Subject"] = u"[This email has been divert] - " + self.raw.headers["Subject"]
 
             # email body
+            self.raw.headers["Subject"] =  u"[" + subject_prefix + "] - " + self.raw.headers["Subject"]
 
 
     def send(self, logger, ext):
@@ -270,7 +270,7 @@ def main():
     email.check_env_header(logger, config.get("headers", "default_env"))
     email.set_transport_from_env_header(logger)
     email.set_recipients_from_headers(logger, config.get("headers", "default_recipients"))
-    email.tag_changes(logger)
+    email.tag_changes(logger, config.get("filter", "subject_prefix"))
 
     # send 'filtered' email
     email.save_to_disk(logger, "filtered")

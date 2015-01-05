@@ -1,5 +1,6 @@
 [filter]
 dir: /var/spool/filter/
+subject_prefix: This email was rerouted
 
 [headers]
 default_env: live
