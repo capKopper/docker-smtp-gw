@@ -1,0 +1,2 @@
+{{range tree "config/mail/transports/headers/"}}
+{{.Key}} {{.Value}}{{end}}

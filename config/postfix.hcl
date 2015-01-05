@@ -11,3 +11,8 @@ template {
   destination = "/etc/postfix/sender_transport"
   command = "postmap /etc/postfix/sender_transport && supervisorctl restart postfix"
 }
+
+template {
+  source = "/etc/consul-template/postfix_header_checks.ctmpl"
+  destination = "/etc/postfix/header_checks"
+}

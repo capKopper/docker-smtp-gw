@@ -24,6 +24,7 @@ RUN cd /opt && \
 RUN mkdir /etc/consul-template/
 ADD config/postfix_main.cf.ctmpl /etc/consul-template/postfix_main.cf.ctmpl
 ADD config/postfix_sender_transport.ctmpl /etc/consul-template/
+ADD config/postfix_header_checks.ctmpl /etc/consul-template/
 ADD config/postfix.hcl /etc/consul-template/config.hcl
 ## supervisor
 ADD config/supervisor-postfix.conf /etc/supervisor/conf.d/postfix.conf

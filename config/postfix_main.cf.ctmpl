@@ -49,3 +49,4 @@ relayhost =
 transport_maps =
 default_transport = {{key "config/mail/transports/default"}}
 sender_dependent_default_transport_maps = hash:/etc/postfix/sender_transport
+header_checks = regexp:/etc/postfix/header_checks
