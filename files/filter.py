@@ -186,8 +186,6 @@ class Email:
             # remove the 'To' header (will be added later by sendmail)
             if self.raw.headers["To"] is not None:
                 logger.info("%s: 'To' header has been detected, remove it" % self.uuid)
-                logger.debug("%s: add 'X-Capkopper-Filter-Origin-To' header" % self.uuid)
-                self.raw.headers.add("X-Capkopper-Filter-Origin-To", self.raw.headers["To"])
                 self.raw.remove_headers("To")
 
             # flag that email has changed
