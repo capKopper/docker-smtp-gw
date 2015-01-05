@@ -1,0 +1,9 @@
+[filter]
+dir: /var/spool/filter/
+
+[headers]
+default_env: live
+default_recipients: dev@capkopper.fr
+
+[log]
+file: /var/log/postfix/filter.log

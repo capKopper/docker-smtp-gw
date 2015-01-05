@@ -18,6 +18,19 @@ RUN cd /opt && \
     chmod u+x /usr/local/bin/consul-template && \
     rm -fr /opt/consul-template*
 
+## -- Email filtering --
+## python tools and librairies
+RUN apt-get install python-pip python-dev -y
+ADD config/requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt
+## add script and configuration
+ENV FILTER_USER filter
+ENV FILTER_DIR /var/spool/filter
+RUN useradd ${FILTER_USER}  && \
+    mkdir ${FILTER_DIR}
+ADD files/filter.py /etc/postfix/scripts/filter.py
+ADD files/filter.settings /etc/postfix/scripts/filter.settings
+RUN chown ${FILTER_USER}:${FILTER_USER} /etc/postfix/scripts/filter.py ${FILTER_DIR}
 
 ## -- Configuration --
 ## consul-template

@@ -88,6 +88,17 @@ configure_postfix_master_services(){
   _log "> disable 'smtp' service (25/tcp)"
   sed -i -e "s/^\(smtp.*inet.*smtpd\)$/#\1/g" ${POSTFIX_MASTER_FILE}
 
+  _log "> add 'filter' service"
+  if [ $(grep -c "^filter" ${POSTFIX_MASTER_FILE}) == "0" ]; then
+
+    cat << EOF >> ${POSTFIX_MASTER_FILE}
+filter unix  -       n       n       -       10       pipe flags=Rq
+  user=filter argv=/etc/postfix/scripts/filter.py \${sender} \${recipient}
+EOF
+  else
+    _log ">> already active"
+  fi
+
   _log "> enable 'submission' service (587/tcp)"
   if [ $(grep -c "^#submission" ${POSTFIX_MASTER_FILE}) == "1" ]; then
     sed -i -e "s/^#submission.*$//g" ${POSTFIX_MASTER_FILE}
@@ -97,6 +108,7 @@ submission inet  n       -       n       -       -       smtpd
   -o syslog_name=postfix/submission
   -o smtpd_tls_security_level=encrypt
   -o smtpd_sasl_auth_enable=yes
+  -o content_filter=filter:
 EOF
   else
     _log ">> already active"
