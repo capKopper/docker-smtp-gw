@@ -3,7 +3,7 @@ dir: /var/spool/filter/
 subject_prefix: This email was rerouted
 
 [headers]
-default_env: live
+default_env: dev
 default_recipients: dev@capkopper.fr
 
 [log]
